@@ -8,10 +8,13 @@ To create the `data.json` file that contains the data.
 """
 import os
 import json
-from typing import Dict, List, Optional, Union, cast
+import base64
+import pandas as pd
 import requests
 
 from env import github_token, github_username
+from typing import Dict, List, Optional, Union, cast
+
 
 
 def search_github_repositories(search_query, repository_type="repositories", per_page=100):
@@ -59,3 +62,50 @@ def search_github_repositories(search_query, repository_type="repositories", per
             break
 
     return all_repositories
+
+
+
+
+def get_repo(search_query, per_page=100):
+    # Check if the CSV file exists
+    if os.path.exists('github_repos.csv'):
+        # If the CSV file exists, read the data from the file
+        df = pd.read_csv('github_repos.csv')
+    else:
+        # Use the existing function to fetch GitHub repositories
+        repositories = search_github_repositories(search_query, "repositories", per_page)
+        
+        repo_data = []
+        
+        for repo in repositories:
+            repo_info = {
+                "Name": repo["name"],
+                "URL": repo["html_url"],
+                "Description": repo["description"],
+                "Readme": "",
+            }
+        
+            if repo["has_wiki"]:
+                readme_url = f"https://api.github.com/repos/{repo['full_name']}/readme"
+                headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
+                response = requests.get(readme_url, headers=headers)
+        
+                if response.status_code == 200:
+                    readme_data = response.json()
+                    encoded_readme = readme_data.get("content", "")
+                    decoded_readme = base64.b64decode(encoded_readme).decode('utf-8')
+                    repo_info["Readme"] = decoded_readme
+        
+            repo_data.append(repo_info)
+        
+        # Create a DataFrame from the repo_data
+        df = pd.DataFrame(repo_data)
+        
+        # Save the DataFrame to a CSV file for future use
+        df.to_csv('github_repos.csv', index=False)
+    
+    return df
+
+
+
+
