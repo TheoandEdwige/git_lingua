@@ -23,8 +23,8 @@ def tokenize(string):
     return string
 
 # Function to remove stopwords
-def remove_stopwords(string, extra_words=None, exclude_words=None):
-    extra_words = extra_words or []
+def remove_stopwords(string, exclude_words=None):
+    extra_words = ['ai', 'artificial intelligence', 'machine learning', 'deep learning']
     exclude_words = exclude_words or []
     stopword_list = stopwords.words('english')
     stopword_list = set(stopword_list) - set(exclude_words)
@@ -34,7 +34,8 @@ def remove_stopwords(string, extra_words=None, exclude_words=None):
     return ' '.join(words)
 
 # Function to perform text preprocessing on a DataFrame
-def preprocess_text_in_dataframe(dataframe, column_name, extra_words=None, exclude_words=None):
+def preprocess_text_in_dataframe(dataframe, column_name, extra_words, exclude_words=None):
+    extra_words = ['ai', 'artificial', 'intelligence', 'machinelearning', 'deep learning']
     # Basic cleaning
     dataframe[column_name] = dataframe[column_name].apply(basic_clean)
     
@@ -42,7 +43,7 @@ def preprocess_text_in_dataframe(dataframe, column_name, extra_words=None, exclu
     dataframe[column_name] = dataframe[column_name].apply(tokenize)
     
     # Removing stopwords
-    dataframe[column_name] = dataframe[column_name].apply(remove_stopwords, extra_words=extra_words, exclude_words=exclude_words)
+    dataframe[column_name] = dataframe[column_name].apply(remove_stopwords, extra_words, exclude_words=exclude_words)
     
     return dataframe
 
