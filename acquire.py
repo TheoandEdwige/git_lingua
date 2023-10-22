@@ -80,8 +80,7 @@ def get_repo(search_query, per_page=100):
         for repo in repositories:
             repo_info = {
                 "Name": repo["name"],
-                "URL": repo["html_url"],
-                "Description": repo["description"],
+                "Language": repo["language"],
                 "Readme": "",
             }
         

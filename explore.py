@@ -31,5 +31,14 @@ def generate_word_cloud(dataframe, column_name):
     plt.show()
 
 
+def plot_readme_length_histogram(df):
+    readme_lengths = df['readme'].str.len()
+    
+    plt.figure(figsize=(10, 5))
+    plt.hist(readme_lengths, bins=20, color='skyblue', edgecolor='black')
+    plt.xlabel('README Length')
+    plt.ylabel('Frequency')
+    plt.title('Histogram of README Lengths')
+    plt.show()
 
 
