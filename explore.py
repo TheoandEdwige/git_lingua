@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import numpy as np
 
 def calculate_basic_statistics(dataframe, column_name):
     # Calculate basic statistics on the specified column
@@ -30,7 +31,6 @@ def generate_word_cloud(dataframe, column_name):
     plt.axis("off")
     plt.show()
 
-
 def plot_readme_length_histogram(df):
     readme_lengths = df['readme'].str.len()
     
@@ -41,4 +41,22 @@ def plot_readme_length_histogram(df):
     plt.title('Histogram of README Lengths')
     plt.show()
 
+def idf_plot():
+    ## testing IDF CHART
+
+    n_documents = 20
+
+    x = np.arange(1, n_documents + 1)
+    y = np.log(n_documents / x)
+
+    plt.figure(figsize=(12, 8))
+    plt.plot(x, y, marker='.')
+
+    plt.xticks(x)
+    plt.xlabel('# of Documents the word appears in')
+    plt.ylabel('IDF')
+    plt.title('IDF for a given word')
+    plt.show()
+
+    
 
