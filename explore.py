@@ -41,4 +41,7 @@ def plot_readme_length_histogram(df):
     plt.title('Histogram of README Lengths')
     plt.show()
 
-
+#visualization of the top words in readme
+def top_words_barplot(top_words):
+    top_words.plot.barh()gi
+    plt.show()
