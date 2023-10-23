@@ -1,3 +1,11 @@
+'''
+This file contains the original instructions for the NLP project. Along with reference code.
+
+We wanted to use a more focused search so we made a seperate acuire.py file with our working code.
+
+Our project only uses the tokenizatoin steps, which you can find in the readme.
+'''
+
 """
 A module for obtaining repo readme and language data from the github API.
 Before using this module, read through it, and follow the instructions marked
