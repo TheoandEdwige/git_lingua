@@ -1,7 +1,13 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 import numpy as np
+import prepare as p
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from collections import Counter
+from wordcloud import WordCloud
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 def calculate_basic_statistics(dataframe, column_name):
     # Calculate basic statistics on the specified column
@@ -78,3 +84,116 @@ def hypothesis_one(df):
     plt.xlabel('Programming Language')
     plt.ylabel('Average README Word Count')
     plt.show()
+
+
+def hypothesis_two(df):
+    # Define the top 10 programming languages
+    top_10_languages = ['Python', 'JavaScript', 'Java', 'C++', 'C#', 'Ruby', 'Swift', 'PHP', 'Go', 'TypeScript']
+    
+    # Filter the DataFrame to include only the top 10 languages
+    df_top_10 = df[df['language'].isin(top_10_languages)]
+    
+    # Calculate the word count for each README
+    df_top_10['readme_word_count'] = df_top_10['readme'].apply(lambda x: len(x.split()))
+    
+    # EDA and Visualization
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='readme_word_count', y='language', data=df_top_10)
+    plt.title('Relationship Between README Word Count and Top 10 Programming Languages')
+    plt.xlabel('README Word Count')
+    plt.ylabel('Programming Language')
+    plt.xticks(rotation=90)
+    plt.show()
+
+
+def hypothesis_three(df):
+    # Filter the DataFrame to include only R repositories
+    r_df = df[df['language'] == 'R']
+    
+    # Preprocess the text data in the README files (use your preprocess_text_in_dataframe function)
+    r_df = p.preprocess_text_in_dataframe(r_df, 'readme')
+    
+    # Initialize the TF-IDF vectorizer
+    tfidf_vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+    
+    # Fit and transform the READMEs into TF-IDF vectors
+    tfidf_matrix = tfidf_vectorizer.fit_transform(r_df['readme'])
+    
+    # Get the feature names (words) corresponding to the columns of the TF-IDF matrix
+    feature_names = tfidf_vectorizer.get_feature_names_out()
+    
+    # Calculate the mean TF-IDF score for each word across R READMEs
+    mean_tfidf_scores = tfidf_matrix.mean(axis=0)
+    
+    # Convert the mean TF-IDF scores to a dictionary with words as keys and scores as values
+    word_scores = {word: score for word, score in zip(feature_names, mean_tfidf_scores.tolist()[0])}
+    
+    # Find the top 3 most predictive words (highest TF-IDF scores)
+    top_predictive_words = Counter(word_scores).most_common(3)
+    
+    # Display the top 3 most predictive words
+    print("Top 3 Most Predictive Words in R READMEs:")
+    for word, score in top_predictive_words:
+        print(f"{word}: {score}")
+
+
+def hypothesis_four(df):
+    # Filter the DataFrame to include only MATLAB repositories
+    matlab_df = df[df['language'] == 'MATLAB']
+    
+    # Preprocess the text data in the README files (use your preprocess_text_in_dataframe function)
+    matlab_df = p.preprocess_text_in_dataframe(matlab_df, 'readme')
+    
+    # Initialize the TF-IDF vectorizer
+    tfidf_vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+    
+    # Fit and transform the READMEs into TF-IDF vectors
+    tfidf_matrix = tfidf_vectorizer.fit_transform(matlab_df['readme'])
+    
+    # Get the feature names (words) corresponding to the columns of the TF-IDF matrix
+    feature_names = tfidf_vectorizer.get_feature_names_out()
+    
+    # Calculate the mean TF-IDF score for each word across MATLAB READMEs
+    mean_tfidf_scores = tfidf_matrix.mean(axis=0)
+    
+    # Convert the mean TF-IDF scores to a dictionary with words as keys and scores as values
+    word_scores = {word: score for word, score in zip(feature_names, mean_tfidf_scores.tolist()[0])}
+    
+    # Find the top 3 most predictive words (highest TF-IDF scores)
+    top_predictive_words = Counter(word_scores).most_common(3)
+    
+    # Display the top 3 most predictive words
+    print("Top 3 Most Predictive Words in MATLAB READMEs:")
+    for word, score in top_predictive_words:
+        print(f"{word}: {score}")
+
+
+def hypothesis_five(df):
+    # Filter the DataFrame to include only TeX repositories
+    tex_df = df[df['language'] == 'TeX']
+    
+    # Preprocess the text data in the README files (use your preprocess_text_in_dataframe function)
+    tex_df = p.preprocess_text_in_dataframe(tex_df, 'readme')
+    
+    # Initialize the TF-IDF vectorizer
+    tfidf_vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+    
+    # Fit and transform the READMEs into TF-IDF vectors
+    tfidf_matrix = tfidf_vectorizer.fit_transform(tex_df['readme'])
+    
+    # Get the feature names (words) corresponding to the columns of the TF-IDF matrix
+    feature_names = tfidf_vectorizer.get_feature_names_out()
+    
+    # Calculate the mean TF-IDF score for each word across TeX READMEs
+    mean_tfidf_scores = tfidf_matrix.mean(axis=0)
+    
+    # Convert the mean TF-IDF scores to a dictionary with words as keys and scores as values
+    word_scores = {word: score for word, score in zip(feature_names, mean_tfidf_scores.tolist()[0])}
+    
+    # Find the top 3 most predictive words (highest TF-IDF scores)
+    top_predictive_words = Counter(word_scores).most_common(3)
+    
+    # Display the top 3 most predictive words
+    print("Top 3 Most Predictive Words in TeX READMEs:")
+    for word, score in top_predictive_words:
+        print(f"{word}: {score}")
