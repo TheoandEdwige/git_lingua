@@ -53,14 +53,15 @@ def preprocess_text_in_dataframe(dataframe, column_name, exclude_words=None):
 
     return dataframe
 
-def big_and_small():
+def big_and_small(df) -> dict:
     '''
-    creates a dictionary of how many that is ordered by count. Will give a dictionary sorted by number of times each word has appeared throughout all 
+    creates a dictionary that measuresin  how many documnets a word appears that is ordered by count.
+    can use the dictionary to drop a lot of words that are not descriptive.
     '''
     for readme in df['readme'].dropna():
-    # Tokenize the 'Readme' content (you can use more advanced tokenization)
-    words = set(readme.split()) # Using set to ensure unique
-    
+        # Tokenize the 'Readme' content
+        words = set(readme.split()) # Using set to ensure unique
+
     # Initialize a defaultdict of set to track in which readmes each word has appeared
     word_readmes = defaultdict(set)
 
@@ -76,6 +77,8 @@ def big_and_small():
     
     
     sorted_words = dict(sorted(word_counts.items(), key=lambda item: item[1], reverse=True))
+    return sorted_words
+
 
 
     
