@@ -1,5 +1,6 @@
 import pandas as pd
 
+from sklearn.dummy import DummyClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -150,3 +151,21 @@ def evaluate_final_model(X_train, y_train, X_val, y_val, random_state=42):
     test_set_accuracy = accuracy_score(y_test, y_pred_test)
     
     return test_set_accuracy
+
+
+
+def baseline(X_train, y_train, X_val, y_val):
+    # Calculate the most frequent class in the training data
+    most_frequent_class = y_train.value_counts().idxmax()
+    
+    # Create a DummyClassifier that always predicts the most frequent class
+    baseline_classifier = DummyClassifier(strategy="most_frequent")
+    baseline_classifier.fit(X_train, y_train)
+    
+    # Predict the most frequent class for all instances in the validation data
+    y_pred_baseline = baseline_classifier.predict(X_val)
+    
+    # Calculate the accuracy of the baseline model
+    accuracy = accuracy_score(y_val, y_pred_baseline)
+    
+    print(f"Baseline Accuracy: {accuracy:.4f}")

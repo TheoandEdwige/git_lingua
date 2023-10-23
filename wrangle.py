@@ -76,7 +76,7 @@ def convert_and_dropna(df):
     df.columns = [column.lower() for column in df.columns]
     
     # Remove rows with missing 'readme' values
-    df = df.dropna(subset=['readme'])
+    df = df.dropna(subset=['readme', 'language'])
     
     # Check for and remove duplicate rows
     df.drop_duplicates(subset=['name'], inplace=True)
