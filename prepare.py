@@ -44,7 +44,7 @@ def preprocess_text_in_dataframe(dataframe, column_name, exclude_words=None):
     # Basic cleaning
     dataframe[column_name] = dataframe[column_name].apply(basic_clean)
     
-    # Tokenization
+    # Tokenizationg
     dataframe[column_name] = dataframe[column_name].apply(tokenize)
     
     # Removing stopwords
