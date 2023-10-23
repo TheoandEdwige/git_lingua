@@ -18,8 +18,13 @@ def basic_clean(string):
 
 # Function to tokenize text
 def tokenize(string):
+    # Initialize a tokenizer object
     tokenizer = ToktokTokenizer()
+    # Tokenize the input data using the tokenizer object
     string = tokenizer.tokenize(string, return_str=True)
+    string = re.sub(r"[^a-z0-9\s]", "", string)
+    string = re.sub(r"\s\d{1}\s", "", string)
+    # Return the processed data
     return string
 
 # Function to remove stopwords
@@ -34,7 +39,7 @@ def remove_stopwords(string, exclude_words=None):
     return ' '.join(words)
 
 # Function to perform text preprocessing on a DataFrame
-def preprocess_text_in_dataframe(dataframe, column_name, extra_words, exclude_words=None):
+def preprocess_text_in_dataframe(dataframe, column_name, exclude_words=None):
     extra_words = ['ai', 'artificial', 'intelligence', 'machinelearning', 'deep learning']
     # Basic cleaning
     dataframe[column_name] = dataframe[column_name].apply(basic_clean)
@@ -44,7 +49,7 @@ def preprocess_text_in_dataframe(dataframe, column_name, extra_words, exclude_wo
     
     # Removing stopwords
     dataframe[column_name] = dataframe[column_name].apply(remove_stopwords, extra_words, exclude_words=exclude_words)
-    
+
     return dataframe
 
 

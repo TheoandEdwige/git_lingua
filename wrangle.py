@@ -36,7 +36,7 @@ def plot_unique_words_by_language(df):
     plt.show()
 
 
-def top_unique_words_by_language(df, num_languages=5, num_words=3):
+def top_unique_words_by_language(df, num_languages=6, num_words=3):
     # Filter out rows where 'language' is not NaN
     df_filtered = df[df['language'].notna()]
 
@@ -61,9 +61,30 @@ def top_unique_words_by_language(df, num_languages=5, num_words=3):
     # Get the top N most popular programming languages based on the number of repositories
     top_languages = df_filtered['language'].value_counts().head(num_languages).index
 
-    # Display the top M unique words for each of the top N most popular languages
+    # Display the top M unique words for each of the top N most popular languages, excluding 'Jupyter Notebook'
     for language in top_languages:
-        top_words = unique_words_by_language[language].sort_values(ascending=False).head(num_words)
-        print(f"Top {num_words} words for {language}:")
-        print(top_words)
-        print("\n")
+        if language != 'Jupyter Notebook':
+            top_words = unique_words_by_language[language].sort_values(ascending=False).head(num_words)
+            print(f"Top {num_words} words for {language}:")
+            print(top_words)
+            print("\n")
+
+
+
+def convert_and_dropna(df):
+    #convert all column names to lowercase
+    df.columns = [column.lower() for column in df.columns]
+    
+    # Remove rows with missing 'readme' values
+    df = df.dropna(subset=['readme'])
+    
+    # Check for and remove duplicate rows
+    df.drop_duplicates(subset=['name'], inplace=True)
+    
+    # Reset the index after dropping rows
+    df = df.reset_index(drop=True)
+
+    #convert all column names to lowercase
+    df.columns = [column.lower() for column in df.columns]
+
+    return df

@@ -41,12 +41,12 @@ def plot_readme_length_histogram(df):
     plt.title('Histogram of README Lengths')
     plt.show()
 
-<<<<<<< HEAD
 #visualization of the top words in readme
 def top_words_barplot(top_words):
-    top_words.plot.barh()gi
+    top_words.plot.barh()
     plt.show()
-=======
+
+
 def idf_plot():
     ## testing IDF CHART
 
@@ -63,7 +63,3 @@ def idf_plot():
     plt.ylabel('IDF')
     plt.title('IDF for a given word')
     plt.show()
-
-    
-
->>>>>>> 0b639d397bf522f5618a700c6ca8ab5f54dc2999
