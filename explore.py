@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 from collections import Counter
 from wordcloud import WordCloud
+from scipy.stats import chi2_contingency
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -197,3 +198,48 @@ def hypothesis_five(df):
     print("Top 3 Most Predictive Words in TeX READMEs:")
     for word, score in top_predictive_words:
         print(f"{word}: {score}")
+
+
+def statistical_test2(df):
+    # Create a DataFrame with counts of programming languages and word presence
+    data = pd.crosstab(df['language'], df['UniqueWords'])
+    
+    # Perform the chi-squared test
+    chi2, p, dof, expected = chi2_contingency(data)
+    
+    # Print the chi-squared statistic and p-value
+    print(f"Chi-squared Statistic: {chi2}")
+    print(f"P-Value: {p}")
+    
+    # Determine if the null hypothesis should be rejected
+    alpha = 0.05  # Set your significance level
+    if p < alpha:
+        print("Reject the null hypothesis: There is an association between programming language and specific word presence.")
+    else:
+        print("Fail to reject the null hypothesis: No significant association found.")
+
+
+def statistical_test3(df):
+    # Example: Assuming 'word1' is a predefined top word
+    word1 = 'learning'
+    
+    # Create a binary column for the presence of 'word1' in READMEs
+    df[word1] = df['readme'].str.contains(word1).astype(int)
+    
+    # Create a contingency table with presence/absence of 'word1' and programming languages
+    contingency_table = pd.crosstab(df[word1], df['language'])
+    
+    # Perform the chi-squared test
+    chi2, p, _, _ = chi2_contingency(contingency_table)
+    
+    # Set the significance level (alpha)
+    alpha = 0.05
+    
+    # Check if the p-value is less than alpha to determine significance
+    if p < alpha:
+        print(f"Reject the null hypothesis: The presence of '{word1}' is associated with the choice of programming language.")
+    else:
+        print(f"Fail to reject the null hypothesis: The presence of '{word1}' is not significantly associated with the choice of programming language.")
+    # Display Chi2 and p
+    print(f"Chi2: {chi2}")
+    print(f"P-value: {p}")
