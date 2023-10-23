@@ -63,3 +63,18 @@ def idf_plot():
     plt.ylabel('IDF')
     plt.title('IDF for a given word')
     plt.show()
+
+
+def hypothesis_one(df):
+    # Tokenize the 'readme' column into words
+    df['readme_words'] = df['readme'].apply(lambda x: len(x.split()))
+    # Create the 'readme_word_count' column
+    df['readme_word_count'] = df['readme_words']
+    # EDA and Visualization
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='language', y='readme_word_count', data=df)
+    plt.title('Impact of Programming Language on README Word Count')
+    plt.xticks(rotation=90)
+    plt.xlabel('Programming Language')
+    plt.ylabel('Average README Word Count')
+    plt.show()
