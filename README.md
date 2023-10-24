@@ -1,5 +1,5 @@
 ---
-contributors:
+Contributors:
   - Edwige Elysee
   - Theodore Quansah
 ---
@@ -50,6 +50,7 @@ Link to conda:
 https://docs.conda.io/en/latest/
 
 
+
 ### Data Dictionary
 
 | Field             | Description                                                 |
@@ -62,6 +63,7 @@ https://docs.conda.io/en/latest/
 | **readme_word_count** | Total word count of the README                           |
 | **learning**      | Binary flag indicating if the repo is related to learning  |
 | **encoded_target**| Encoded target variable        |
+
 
 
 ### Programming Languages
@@ -117,6 +119,7 @@ https://docs.conda.io/en/latest/
 | **PostScript**      | PostScript page description language  |
 
 
+
 ### Project File System
 
 | Field                 | Description                                                |
@@ -140,6 +143,7 @@ https://docs.conda.io/en/latest/
 | **env.py**            | Environment variables and settings                         |
 | **mvp-Copy2.ipynb**   | Another copy of Minimum Viable Product notebook            |
 | **predictions.csv**   | Best models predictions on the test dataset            |
+
 
 
 ## Exploration Questions and Awnsers
