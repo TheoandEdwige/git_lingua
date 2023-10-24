@@ -6,6 +6,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def plot_most_common_words(df, num_words=20):
+    """
+    Plot the most common words in the combined README text.
+
+    Args:
+        df (pandas.DataFrame): DataFrame containing README text.
+        num_words (int, optional): Number of most common words to plot (default is 20).
+    """
     # Combine all README texts into one string
     all_readme_text = ' '.join(df['readme'])
     
@@ -21,6 +28,12 @@ def plot_most_common_words(df, num_words=20):
 
 
 def plot_unique_words_by_language(df):
+    """
+    Plot the average number of unique words in READMEs by programming language.
+
+    Args:
+        df (pandas.DataFrame): DataFrame containing README text and language information.
+    """
     # Calculate the number of unique words in each README
     df['UniqueWords'] = df['readme'].apply(lambda x: len(set(x.split())))
 
@@ -37,6 +50,14 @@ def plot_unique_words_by_language(df):
 
 
 def top_unique_words_by_language(df, num_languages=6, num_words=3):
+    """
+    Display the top unique words for the most popular programming languages.
+
+    Args:
+        df (pandas.DataFrame): DataFrame containing README text and language information.
+        num_languages (int, optional): Number of popular languages to consider (default is 6).
+        num_words (int, optional): Number of top unique words to display for each language (default is 3).
+    """
     # Filter out rows where 'language' is not NaN
     df_filtered = df[df['language'].notna()]
 
@@ -72,6 +93,16 @@ def top_unique_words_by_language(df, num_languages=6, num_words=3):
 
 
 def convert_and_dropna(df):
+    """
+    Preprocess and clean the DataFrame by converting column names to lowercase,
+    removing rows with missing 'readme' values, removing duplicate rows, and resetting the index.
+
+    Args:
+        df (pandas.DataFrame): Input DataFrame.
+
+    Returns:
+        pandas.DataFrame: Cleaned and preprocessed DataFrame.
+    """
     #convert all column names to lowercase
     df.columns = [column.lower() for column in df.columns]
     
@@ -88,3 +119,4 @@ def convert_and_dropna(df):
     df.columns = [column.lower() for column in df.columns]
 
     return df
+

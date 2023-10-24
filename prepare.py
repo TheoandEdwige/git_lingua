@@ -9,9 +9,15 @@ from collections import defaultdict
 
 
 def basic_clean(string):
-    '''
-    Function for basic text cleaning
-    '''
+    """
+    Perform basic text cleaning on the input string.
+
+    Args:
+        string (str): Input text to clean.
+
+    Returns:
+        str: Cleaned text.
+    """
     string = string.lower()
     string = unicodedata.normalize('NFKD', string)\
             .encode('ascii', 'ignore')\
@@ -22,9 +28,15 @@ def basic_clean(string):
 
 
 def tokenize(string):
-    '''
-    Function to tokenize text
-    '''
+    """
+    Tokenize the input string using a tokenizer.
+
+    Args:
+        string (str): Input text to tokenize.
+
+    Returns:
+        str: Tokenized text.
+    """
     # Initialize a tokenizer object
     tokenizer = ToktokTokenizer()
     # Tokenize the input data using the tokenizer object
@@ -36,9 +48,16 @@ def tokenize(string):
 
 
 def remove_stopwords(string, exclude_words=None):
-    '''
-    Function to remove stopwords
-    '''
+    """
+    Remove stopwords from the input text.
+
+    Args:
+        string (str): Input text to remove stopwords from.
+        exclude_words (list, optional): List of words to exclude from stopwords (default is None).
+
+    Returns:
+        str: Text with stopwords removed.
+    """
     extra_words = ['ai', 'artificial intelligence', 'machine learning', 'deep learning']
     exclude_words = exclude_words or []
     stopword_list = stopwords.words('english')
@@ -50,10 +69,15 @@ def remove_stopwords(string, exclude_words=None):
 
 
 def big_and_small(df) -> dict:
-    '''
-    creates a dictionary that measuresin  how many documnets a word appears that is ordered by count.
-    can use the dictionary to drop a lot of words that are not descriptive.
-    '''
+    """
+    Create a dictionary that measures how many documents a word appears in, ordered by count.
+
+    Args:
+        df (pandas.DataFrame): DataFrame containing 'readme' text.
+
+    Returns:
+        dict: Dictionary with word frequencies.
+    """
     for readme in df['readme'].dropna():
         # Tokenize the 'Readme' content
         words = set(readme.split()) # Using set to ensure unique
@@ -76,9 +100,17 @@ def big_and_small(df) -> dict:
 
     
 def preprocess_text_in_dataframe(dataframe, column_name, exclude_words=None):
-    '''
-    Function to perform text preprocessing on a DataFrame
-    '''
+    """
+    Perform text preprocessing on a DataFrame column.
+
+    Args:
+        dataframe (pandas.DataFrame): Input DataFrame.
+        column_name (str): Name of the column to preprocess.
+        exclude_words (list, optional): List of words to exclude (default is None).
+
+    Returns:
+        pandas.DataFrame: DataFrame with preprocessed text.
+    """
     extra_words = ['ai', 'artificial', 'intelligence', 'machinelearning', 'deep learning']
     # Basic cleaning
     dataframe[column_name] = dataframe[column_name].apply(basic_clean)
@@ -93,12 +125,16 @@ def preprocess_text_in_dataframe(dataframe, column_name, exclude_words=None):
 
 
 def remove_low_frequency_words(dataframe, column_name):
-    '''
-    Function to remove low_frequency_words
-    tanks accuracy if used. perhaps can test using smaller values 
-    # Removing low frequecny words improves randomn forest model accuracy from 49 - 56.
-    <30 accuracy ~40, <10 accuracy ~56
-    '''
+    """
+    Remove low-frequency words from a DataFrame column.
+
+    Args:
+        dataframe (pandas.DataFrame): Input DataFrame.
+        column_name (str): Name of the column containing text to process.
+
+    Returns:
+        pandas.DataFrame: DataFrame with low-frequency words removed.
+    """
     lf_dict = big_and_small(dataframe)
     lf_words = [key for key, value in lf_dict.items() if value < 10]
     

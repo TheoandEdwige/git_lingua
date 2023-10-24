@@ -14,6 +14,19 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 
 def encode_and_split_data(df, text_column, target_column, test_size=0.2, random_state=42):
+    """
+    Encode the target variable and split the data into training and validation sets.
+
+    Args:
+        df (pandas.DataFrame): The DataFrame containing the data.
+        text_column (str): The name of the text column.
+        target_column (str): The name of the target column.
+        test_size (float, optional): The proportion of data to include in the validation set (default is 0.2).
+        random_state (int, optional): Seed for random number generation (default is 42).
+
+    Returns:
+        tuple: Four elements (X_train, X_val, y_train, y_val) representing the training and validation data.
+    """
     # Create a label encoder
     label_encoder = LabelEncoder()
 
@@ -31,6 +44,17 @@ def encode_and_split_data(df, text_column, target_column, test_size=0.2, random_
 
 
 def tfidf_vectorization(X_train, X_val, max_features=5000):
+    """
+    Perform TF-IDF vectorization on the training and validation data.
+
+    Args:
+        X_train (pandas.Series): Training data containing text.
+        X_val (pandas.Series): Validation data containing text.
+        max_features (int, optional): The maximum number of features to consider (default is 5000).
+
+    Returns:
+        tuple: Two elements (X_train_tfidf, X_val_tfidf) representing the TF-IDF transformed data.
+    """
     # Initialize the TF-IDF vectorizer
     tfidf_vectorizer = TfidfVectorizer(max_features=max_features)
 
@@ -44,6 +68,18 @@ def tfidf_vectorization(X_train, X_val, max_features=5000):
 
 
 def train_decision_tree(X_train, y_train, X_val, y_val):
+    """
+    Train a Decision Tree classifier and evaluate its performance.
+
+    Args:
+        X_train (scipy.sparse.csr.csr_matrix): Training data in TF-IDF format.
+        y_train (pandas.Series): Training target variable.
+        X_val (scipy.sparse.csr.csr_matrix): Validation data in TF-IDF format.
+        y_val (pandas.Series): Validation target variable.
+
+    Returns:
+        tuple: Two elements (dt_classifier, accuracy) representing the trained model and its accuracy.
+    """
     # Initialize the Decision Tree Classifier
     dt_classifier = DecisionTreeClassifier(random_state=42)
     
@@ -56,6 +92,18 @@ def train_decision_tree(X_train, y_train, X_val, y_val):
 
 
 def train_random_forest(X_train, y_train, X_val, y_val):
+    """
+    Train a Random Forest classifier and evaluate its performance.
+
+    Args:
+        X_train (scipy.sparse.csr.csr_matrix): Training data in TF-IDF format.
+        y_train (pandas.Series): Training target variable.
+        X_val (scipy.sparse.csr.csr_matrix): Validation data in TF-IDF format.
+        y_val (pandas.Series): Validation target variable.
+
+    Returns:
+        tuple: Two elements (rf_classifier, accuracy) representing the trained model and its accuracy.
+    """
     # Initialize the Random Forest Classifier
     rf_classifier = RandomForestClassifier(min_samples_leaf=2, min_samples_split=5,
                        n_estimators=200, random_state=42)
@@ -69,6 +117,19 @@ def train_random_forest(X_train, y_train, X_val, y_val):
 
 
 def train_knn(X_train, y_train, X_val, y_val, n_neighbors=5):
+    """
+    Train a K-Nearest Neighbors classifier and evaluate its performance.
+
+    Args:
+        X_train (scipy.sparse.csr.csr_matrix): Training data in TF-IDF format.
+        y_train (pandas.Series): Training target variable.
+        X_val (scipy.sparse.csr.csr_matrix): Validation data in TF-IDF format.
+        y_val (pandas.Series): Validation target variable.
+        n_neighbors (int, optional): Number of neighbors to use (default is 5).
+
+    Returns:
+        tuple: Two elements (knn_classifier, accuracy) representing the trained model and its accuracy.
+    """
     # Initialize the K-Nearest Neighbors Classifier
     knn_classifier = KNeighborsClassifier(n_neighbors=n_neighbors)
     
@@ -81,6 +142,18 @@ def train_knn(X_train, y_train, X_val, y_val, n_neighbors=5):
 
 
 def train_logistic_regression(X_train, y_train, X_val, y_val):
+    """
+    Train a Logistic Regression classifier and evaluate its performance.
+
+    Args:
+        X_train (scipy.sparse.csr.csr_matrix): Training data in TF-IDF format.
+        y_train (pandas.Series): Training target variable.
+        X_val (scipy.sparse.csr.csr_matrix): Validation data in TF-IDF format.
+        y_val (pandas.Series): Validation target variable.
+
+    Returns:
+        tuple: Two elements (lr_classifier, accuracy) representing the trained model and its accuracy.
+    """
     # Initialize the Logistic Regression Classifier
     lr_classifier = LogisticRegression(random_state=42)
     
@@ -93,6 +166,18 @@ def train_logistic_regression(X_train, y_train, X_val, y_val):
 
 
 def evaluate_and_compare_models(X_train_tfidf, y_train, X_val_tfidf, y_val):
+    """
+    Evaluate and compare multiple classification models.
+
+    Args:
+        X_train_tfidf (scipy.sparse.csr_matrix): TF-IDF transformed training data.
+        y_train (pandas.Series): Training target labels.
+        X_val_tfidf (scipy.sparse.csr_matrix): TF-IDF transformed validation data.
+        y_val (pandas.Series): Validation target labels.
+
+    Returns:
+        pandas.DataFrame: A DataFrame with model performance metrics (Accuracy, Precision, Recall, and F1-Score).
+    """
     # Create an empty DataFrame to store model performance
     model_comparison = pd.DataFrame(columns=['Model', 'Accuracy', 'Precision', 'Recall', 'F1-Score'])
     # Define the classifiers and their names
@@ -128,6 +213,20 @@ def evaluate_and_compare_models(X_train_tfidf, y_train, X_val_tfidf, y_val):
 
 
 def evaluate_final_model(X_train, y_train, X_val, y_val, random_state=42):
+    """
+    Evaluate the final model using a test set.
+
+    Args:
+        X_train (pandas.Series): Training data containing text.
+        y_train (pandas.Series): Training target labels.
+        X_val (pandas.Series): Validation data containing text.
+        y_val (pandas.Series): Validation target labels.
+        random_state (int, optional): Random state for reproducibility (default is 42).
+
+    Returns:
+        float: Test set accuracy of the final model.
+    """
+
     # Further split the validation set into validation and test sets
     X_val, X_test, y_val, y_test = train_test_split(X_val, y_val, test_size=0.5, random_state=random_state)
     
@@ -155,6 +254,15 @@ def evaluate_final_model(X_train, y_train, X_val, y_val, random_state=42):
 
 
 def baseline(X_train, y_train, X_val, y_val):
+    """
+    Evaluate a baseline model that predicts the most frequent class.
+
+    Args:
+        X_train (pandas.Series): Training data containing text.
+        y_train (pandas.Series): Training target labels.
+        X_val (pandas.Series): Validation data containing text.
+        y_val (pandas.Series): Validation target labels.
+    """
     # Calculate the most frequent class in the training data
     most_frequent_class = y_train.value_counts().idxmax()
     
@@ -169,3 +277,56 @@ def baseline(X_train, y_train, X_val, y_val):
     accuracy = accuracy_score(y_val, y_pred_baseline)
     
     print(f"Baseline Accuracy: {accuracy:.4f}")
+
+
+
+def generate_and_save_predictions(X_train, y_train, X_test, y_test):
+    """
+    Generate predictions for a test set and save them to a CSV file.
+
+    Args:
+        X_train (pandas.Series): Training data containing text.
+        y_train (pandas.Series): Training target labels.
+        X_test (pandas.Series): Test data containing text.
+        y_test (pandas.Series): Test target labels.
+
+    Returns:
+        pandas.DataFrame: A DataFrame with the top 10 predictions and actual language names.
+    """
+    # Initialize the TF-IDF vectorizer
+    tfidf_vectorizer = TfidfVectorizer(max_features=5000)
+    
+    # Fit and transform the training data
+    X_train_tfidf = tfidf_vectorizer.fit_transform(X_train)
+    X_test_tfidf = tfidf_vectorizer.transform(X_test)
+    
+    # Define your model (e.g., RandomForestClassifier) with appropriate hyperparameters
+    model = RandomForestClassifier(min_samples_leaf=2, min_samples_split=5, n_estimators=200, random_state=42)
+    
+    # Fit the model on the training dataset
+    model.fit(X_train_tfidf, y_train)
+    
+    # Make predictions on X_test
+    y_pred = model.predict(X_test_tfidf)
+    
+    # Create a label encoder instance
+    label_encoder = LabelEncoder()
+    
+    # Fit the label encoder on the target variable
+    label_encoder.fit(y_train)
+    
+    # Inverse transform the predictions to get actual language names
+    predicted_languages = label_encoder.inverse_transform(y_pred)
+    
+    # Create a DataFrame to store the predictions and actual language names
+    predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': predicted_languages})
+    
+    # Save the predictions to a CSV file
+    predictions_df.to_csv('predictions.csv', index=False)
+    
+    # Return the top 5 predictions
+    top_5_predictions = predictions_df.head(10)
+    
+    return top_5_predictions
+
+
