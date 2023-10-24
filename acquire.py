@@ -18,6 +18,17 @@ from typing import Dict, List, Optional, Union, cast
 
 
 def search_github_repositories(search_query, repository_type="repositories", per_page=100):
+    """
+    Search GitHub repositories using the GitHub API.
+
+    Args:
+        search_query (str): The query string to search for repositories.
+        repository_type (str, optional): The type of repositories to search for (default is "repositories").
+        per_page (int, optional): The number of repositories to fetch per page (default is 100).
+
+    Returns:
+        list: A list of repository dictionaries containing information about repositories matching the search query.
+    """
     # Define the base URL for the GitHub API
     base_url = "https://api.github.com/search/repositories"
 
@@ -67,6 +78,16 @@ def search_github_repositories(search_query, repository_type="repositories", per
 
 
 def get_repo(search_query, per_page=100):
+    """
+    Get repository data from GitHub based on a search query and save it to a CSV file.
+
+    Args:
+        search_query (str): The query string to search for repositories.
+        per_page (int, optional): The number of repositories to fetch per page (default is 100).
+
+    Returns:
+        pandas.DataFrame: A DataFrame containing information about repositories matching the search query.
+    """
     # Check if the CSV file exists
     if os.path.exists('github_repos.csv'):
         # If the CSV file exists, read the data from the file
