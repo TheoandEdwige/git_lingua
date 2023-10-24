@@ -8,3 +8,13 @@ A model that can predict the main programming language of a repository, given th
 #     2. Save it in your env.py file under the variable `github_token`
 # TODO: Add your github username to your env.py file under the variable `github_username`
 # TODO: Add more repositories to the `REPOS` list below.
+
+
+# ENV
+env file shoudl have two variables.
+github_token, github_username
+
+each should be a string.
+
+
+
