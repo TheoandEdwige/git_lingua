@@ -54,24 +54,24 @@ def top_words_barplot(top_words):
     plt.show()
 
 
-def idf_plot(readme_words):
+def idf_plot(n_documents):
     '''
     plots the total numner and IDF for the most widely used words.
     
     n_documents: Total number of documents in your dataset.
-    x: Number of documents a particular word appears in.
+    x: Number of documents a particular word appears in.  A single number.
     y: Inverse Document Frequency (IDF) of that word.
     '''
 
-    n_documents = readme_words
+    # n_documents = df.shape[0]
 
     x = np.arange(1, n_documents + 1)
     y = np.log(n_documents / x)
 
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(20, 10))
     plt.plot(x, y, marker='.')
 
-    plt.xticks(x)
+    # plt.xticks(x)
     plt.xlabel('# of Documents the word appears in')
     plt.ylabel('IDF')
     plt.title('IDF for a given word')
