@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 
 from collections import Counter
 from wordcloud import WordCloud
-from scipy.stats import mannwhitneyu
 from scipy.stats import chi2_contingency
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -55,18 +54,24 @@ def top_words_barplot(top_words):
     plt.show()
 
 
-def idf_plot():
-    ## testing IDF CHART
+def idf_plot(n_documents):
+    '''
+    plots the total numner and IDF for the most widely used words.
+    
+    n_documents: Total number of documents in your dataset.
+    x: Number of documents a particular word appears in.  A single number.
+    y: Inverse Document Frequency (IDF) of that word.
+    '''
 
-    n_documents = 20
+    # n_documents = df.shape[0]
 
     x = np.arange(1, n_documents + 1)
     y = np.log(n_documents / x)
 
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(20, 10))
     plt.plot(x, y, marker='.')
 
-    plt.xticks(x)
+    # plt.xticks(x)
     plt.xlabel('# of Documents the word appears in')
     plt.ylabel('IDF')
     plt.title('IDF for a given word')
@@ -201,24 +206,6 @@ def hypothesis_five(df):
         print(f"{word}: {score}")
 
 
-def statistical_test1(filtered_df):
-    # comparing Python and JavaScript word counts
-    python_word_counts = filtered_df[filtered_df['language'] == 'Python']['readme_word_count']
-    javascript_word_counts = filtered_df[filtered_df['language'] == 'JavaScript']['readme_word_count']
-    
-    # Perform Mann-Whitney U test
-    statistic, p_value = mannwhitneyu(python_word_counts, javascript_word_counts)
-    alpha=0.05
-    # Check the result
-    if p_value < alpha:
-        print("Null hypothesis rejected: There is a significant difference in word counts.")
-    else:
-        print("Null hypothesis not rejected: No significant difference in word counts.")
-    # Display Chi2 and p
-    print(f"statistic: {statistic}")
-    print(f"P-value: {p_value}")
-
-
 def statistical_test2(df):
     # Create a DataFrame with counts of programming languages and word presence
     data = pd.crosstab(df['language'], df['UniqueWords'])
@@ -238,12 +225,15 @@ def statistical_test2(df):
         print("Fail to reject the null hypothesis: No significant association found.")
 
 
-def statistical_test3(df, word):
+def statistical_test3(df):
+    # Example: Assuming 'word1' is a predefined top word
+    word1 = 'learning'
+    
     # Create a binary column for the presence of 'word1' in READMEs
-    df[word] = df['readme'].str.contains(word).astype(int)
+    df[word1] = df['readme'].str.contains(word1).astype(int)
     
     # Create a contingency table with presence/absence of 'word1' and programming languages
-    contingency_table = pd.crosstab(df[word], df['language'])
+    contingency_table = pd.crosstab(df[word1], df['language'])
     
     # Perform the chi-squared test
     chi2, p, _, _ = chi2_contingency(contingency_table)
@@ -253,9 +243,9 @@ def statistical_test3(df, word):
     
     # Check if the p-value is less than alpha to determine significance
     if p < alpha:
-        print(f"Reject the null hypothesis: The presence of '{word}' is associated with the choice of programming language.")
+        print(f"Reject the null hypothesis: The presence of '{word1}' is associated with the choice of programming language.")
     else:
-        print(f"Fail to reject the null hypothesis: The presence of '{word}' is not significantly associated with the choice of programming language.")
+        print(f"Fail to reject the null hypothesis: The presence of '{word1}' is not significantly associated with the choice of programming language.")
     # Display Chi2 and p
     print(f"Chi2: {chi2}")
     print(f"P-value: {p}")
