@@ -58,7 +58,7 @@ def remove_stopwords(string, exclude_words=None):
     Returns:
         str: Text with stopwords removed.
     """
-    extra_words = ['ai', 'artificial', 'intelligence', 'machine', 'learning', 'deep', 'learning']
+    extra_words = ['ai', 'artificial intelligence', 'machine learning', 'deep learning']
     exclude_words = exclude_words or []
     stopword_list = stopwords.words('english')
     stopword_list = set(stopword_list) - set(exclude_words)
