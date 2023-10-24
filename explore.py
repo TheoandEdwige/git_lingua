@@ -55,16 +55,10 @@ def top_words_barplot(top_words):
     plt.show()
 
 
-def idf_plot(readme_words):
-    '''
-    plots the total numner and IDF for the most widely used words.
-    
-    n_documents: Total number of documents in your dataset.
-    x: Number of documents a particular word appears in.
-    y: Inverse Document Frequency (IDF) of that word.
-    '''
+def idf_plot():
+    ## testing IDF CHART
 
-    n_documents = readme_words
+    n_documents = 20
 
     x = np.arange(1, n_documents + 1)
     y = np.log(n_documents / x)
@@ -207,14 +201,14 @@ def hypothesis_five(df):
         print(f"{word}: {score}")
 
 
-def statistical_test1(df):
-    # Example for comparing Python and JavaScript word counts
+def statistical_test1(filtered_df):
+    # comparing Python and JavaScript word counts
     python_word_counts = filtered_df[filtered_df['language'] == 'Python']['readme_word_count']
     javascript_word_counts = filtered_df[filtered_df['language'] == 'JavaScript']['readme_word_count']
     
     # Perform Mann-Whitney U test
     statistic, p_value = mannwhitneyu(python_word_counts, javascript_word_counts)
-    
+    alpha=0.05
     # Check the result
     if p_value < alpha:
         print("Null hypothesis rejected: There is a significant difference in word counts.")
