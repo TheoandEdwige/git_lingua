@@ -108,3 +108,4 @@ def remove_low_frequency_words(dataframe, column_name):
     dataframe[column_name] = dataframe[column_name].apply(filter_words)
     
     return dataframe  
+

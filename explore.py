@@ -78,6 +78,7 @@ def idf_plot(n_documents):
     plt.show()
 
 
+
 def hypothesis_one(df):
     # Tokenize the 'readme' column into words
     df['readme_words'] = df['readme'].apply(lambda x: len(x.split()))
@@ -113,35 +114,49 @@ def hypothesis_two(df):
     plt.show()
 
 
+
 def hypothesis_three(df):
     # Filter the DataFrame to include only R repositories
     r_df = df[df['language'] == 'R']
-    
+
     # Preprocess the text data in the README files (use your preprocess_text_in_dataframe function)
     r_df = p.preprocess_text_in_dataframe(r_df, 'readme')
-    
+
     # Initialize the TF-IDF vectorizer
     tfidf_vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
-    
+
     # Fit and transform the READMEs into TF-IDF vectors
     tfidf_matrix = tfidf_vectorizer.fit_transform(r_df['readme'])
-    
+
     # Get the feature names (words) corresponding to the columns of the TF-IDF matrix
     feature_names = tfidf_vectorizer.get_feature_names_out()
-    
+
     # Calculate the mean TF-IDF score for each word across R READMEs
     mean_tfidf_scores = tfidf_matrix.mean(axis=0)
-    
+
     # Convert the mean TF-IDF scores to a dictionary with words as keys and scores as values
     word_scores = {word: score for word, score in zip(feature_names, mean_tfidf_scores.tolist()[0])}
-    
+
     # Find the top 3 most predictive words (highest TF-IDF scores)
     top_predictive_words = Counter(word_scores).most_common(3)
-    
+
     # Display the top 3 most predictive words
     print("Top 3 Most Predictive Words in R READMEs:")
     for word, score in top_predictive_words:
         print(f"{word}: {score}")
+
+    # Create a bar plot to visualize the top 3 predictive words
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=[word[0] for word in top_predictive_words], y=[word[1] for word in top_predictive_words])
+    plt.title('Top 3 Most Predictive Words in R READMEs')
+    plt.xlabel('Words')
+    plt.ylabel('TF-IDF Score')
+    plt.xticks(rotation=45)
+
+    # Show the plot
+    plt.tight_layout()
+    plt.show()
+
 
 
 def hypothesis_four(df):
@@ -174,6 +189,17 @@ def hypothesis_four(df):
     for word, score in top_predictive_words:
         print(f"{word}: {score}")
 
+    # Create a bar chart to visualize the top 3 most predictive words
+    words, scores = zip(*top_predictive_words)
+    plt.figure(figsize=(10, 6))
+    plt.bar(words, scores)
+    plt.xlabel('Words')
+    plt.ylabel('TF-IDF Scores')
+    plt.title('Top 3 Most Predictive Words in MATLAB READMEs')
+    plt.xticks(rotation=45)
+    plt.show()
+
+
 
 def hypothesis_five(df):
     # Filter the DataFrame to include only TeX repositories
@@ -204,6 +230,17 @@ def hypothesis_five(df):
     print("Top 3 Most Predictive Words in TeX READMEs:")
     for word, score in top_predictive_words:
         print(f"{word}: {score}")
+    
+    # Create a bar chart to visualize the top 3 most predictive words
+    words, scores = zip(*top_predictive_words)
+    plt.figure(figsize=(10, 6))
+    plt.bar(words, scores)
+    plt.xlabel('Words')
+    plt.ylabel('TF-IDF Scores')
+    plt.title('Top 3 Most Predictive Words in TeX READMEs')
+    plt.xticks(rotation=45)
+    plt.show()
+
 
 
 def statistical_test2(df):
